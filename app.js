@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const _ = require("lodash");
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -14,10 +15,14 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+app.use(bodyParser.json());
+//challenge 11;
+let posts = [];
 
 //Challenge 1;
 app.get("/", function(req, res){
-  res.render("home", {homeStartingContent: homeStartingContent});
+  res.render("home", {homeStartingContent: homeStartingContent, posts: posts});
+
 })
 //challege 5;
 app.get("/about", function(req, res){
@@ -32,11 +37,12 @@ app.get("/compose", function(req, res){
 })
 //Challenge 8;
 app.post("/compose", function(req, res){
-  const post = {
-    title: req.body.titleInput,
+  let post = {
+    title: req.body.headingBody.title,
     content: req.body.postInput
   };
-  console.log(post);
+  posts.push(post);
+  res.redirect("/");
 })
 
 
@@ -47,7 +53,18 @@ app.post("/compose", function(req, res){
 
 
 
-
+app.get("/posts/:postName", function(req, res){
+  const requstedTitle = req.params.postName;
+  posts.forEach(function(post){
+    const ourTitle= post.title;
+    if(ourTitle.lowerCase===requstedTitle.lowerCase){
+     res.render("post", {
+       title: post.title,
+       content: post.content
+     })
+    }
+  })
+});
 
 
 app.listen(3000, function() {
