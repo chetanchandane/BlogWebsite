@@ -44,20 +44,11 @@ app.post("/compose", function(req, res){
   posts.push(post);
   res.redirect("/");
 })
-
-
-
-
-
-
-
-
-
 app.get("/posts/:postName", function(req, res){
-  const requstedTitle = req.params.postName;
+  const requestedTitle = req.params.postName;
   posts.forEach(function(post){
     const ourTitle= post.title;
-    if(ourTitle.lowerCase===requstedTitle.lowerCase){
+    if(_.lowerCase(ourTitle)===_.lowerCase(requestedTitle)){
      res.render("post", {
        title: post.title,
        content: post.content
