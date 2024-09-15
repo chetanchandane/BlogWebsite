@@ -20,11 +20,11 @@ This project involves deploying a Dockerized Node.js application on AWS using Te
 
  To-Do
 - Add monitoring with Prometheus and Grafana.
+- Implement CICD pipeline using Jenkins
 
  Usage
 1. Run `terraform apply` to set up the infrastructure.
 2. Use Ansible to deploy the application to the EC2 instance.
 3. Access the application via `http://<instance_public_ip>:3000`.
 
-Feel free to expand this README with more detailed instructions, commands, and troubleshooting steps as necessary.
 
